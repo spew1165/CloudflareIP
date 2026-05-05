@@ -1,9 +1,9 @@
 name: Cfxyz
 
 on:
-  push:              # 每次 push 时触发
+  push: # 每次 push 时触发
   schedule:
-   - cron: '0 */1 * * *' # 每3小时运行一次
+    - cron: "0 */1 * * *" # 每3小时运行一次
 
 jobs:
   run-script:
@@ -32,3 +32,11 @@ jobs:
           git add Cfxyz.txt
           git commit -m "Auto update Cfxyz.txt [skip ci]" || echo "No changes to commit"
           git push
+
+      - name: Delete old workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 1
